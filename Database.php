@@ -18,8 +18,10 @@ class database
 
       /**
      * Получить подключение к БД
+     * 
+     * @return \SQLite3 Подключение к базе данных
      */
-    public function getConnection()
+    public function getConnection(): \SQLite3
     {
         return $this->db;
     }
@@ -27,7 +29,7 @@ class database
     /**
      * Закрыть соединение
      */
-    public function closeConnection()
+    public function closeConnection(): void
     {
         if ($this->db) {
             $this->db->close();

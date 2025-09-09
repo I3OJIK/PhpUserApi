@@ -18,8 +18,14 @@ class UserController {
         $this->db = $database->getConnection();
     }
 
-    // Создать пользователя
-    public function create($data)
+    /**
+     * Создать пользователя
+     * 
+     * @param array $data данные для создания (username, password, email)
+     * 
+     * @return array
+     */
+    public function create($data): array
     {
         if (!isset($data['username']) || !isset($data['password']) || !isset($data['email'])) {
             http_response_code(400);
@@ -50,7 +56,14 @@ class UserController {
        
     }
 
-    public function get($id)
+    /**
+     * Получить пользователя
+     * 
+     * @param int $id id пользователя
+     * 
+     * @return array
+     */
+    public function get($id): array
     {
         // проверка на существование пользователя
         $existingUser = $this->getUserById($id);
@@ -70,10 +83,19 @@ class UserController {
                 'status' => 'success',
                 'data' => $user
             ];
+        return ['status' => 'error'];
     }
 
-     // Обновить пользователя
-    public function update($id, $data) {
+    /**
+     * Обновить пользователя
+     * 
+     * @param int $id id пользователя
+     * @param array $data данные для обновления (username, password, email)
+     * 
+     * @return array
+     */
+    public function update($id, $data): array
+    {
         // проверка на существование пользователя
         $existingUser = $this->getUserById($id);
         if (!$existingUser) {
@@ -108,8 +130,15 @@ class UserController {
         }
     }
 
-     // Удалить пользователя
-    public function delete($id) {
+    /**
+     * Удалить пользователя
+     * 
+     * @param int $id id пользователя 
+     * 
+     * @return array
+     */
+    public function delete($id): array
+    {
         // проверка на существование пользователя
         $existingUser = $this->getUserById($id);
         if (!$existingUser) {
@@ -132,7 +161,15 @@ class UserController {
         }
     }
 
-    public function login($data) {
+    /**
+     * Авторизация пользователя
+     * 
+     * @param array $data данные для авторизации (username, password)
+     * 
+     * @return array
+     */
+    public function login($data): array
+    {
         $stmt = $this->db->prepare("SELECT * FROM users WHERE username = :username");
         $stmt->bindValue(':username', $data['username'], SQLITE3_TEXT);
         $result = $stmt->execute();
@@ -152,11 +189,15 @@ class UserController {
             return ['status' => 'error', 'message' => 'Неверный логин или пароль'];
         }
     }
-
+    
     /**
-     *  проверка существования пользователя
+     * проверка существования пользователя
+     * 
+     * @param mixed $id
+     * 
+     * @return array|false
      */
-    private function getUserById($id)
+    private function getUserById($id): array|false
     {
         $stmt = $this->db->prepare("SELECT id FROM users WHERE id = :id");
         $stmt->bindValue(':id', $id, SQLITE3_INTEGER);

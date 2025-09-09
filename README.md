@@ -4,7 +4,12 @@
 Реализованы CRUD-операции и авторизация.
 
 ---
+##  Установка
 
+```bash
+git clone https://github.com/username/php-rest-api.git
+cd php-rest-api
+php -S localhost:8000 -t api
 ---
 
 ## Методы API
